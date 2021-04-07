@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  vault-server:
+    build:
+      context: ./vault-server
+    container_name: vault_server
+    ports:
+      - 8200:8200
+    environment:
+       VAULT_ADDR: http://127.0.0.1:8200
+ #   cap_add:
+ #     - IPC_LOCK
+    networks:
+      default:
+        aliases:
+          - vault-server.example.com
+
+  vault-init:
+    build:
+      context: ./vault-init
+    container_name: vault_init
+    environment:
+      VAULT_ENDPOINT: http://vault-server.example.com:8200
